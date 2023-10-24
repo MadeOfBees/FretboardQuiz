@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Fretboard(): JSX.Element {
   const twelveNotes: string[] = [
     "A",
@@ -39,21 +37,14 @@ export default function Fretboard(): JSX.Element {
     return fretboard;
   };
 
-  const fretboard: string[][] = generateFretboard(fretboardDefaults);
+  const defaultFretboard: string[][] = generateFretboard(fretboardDefaults);
+
+  console.log(defaultFretboard);
 
   return (
-    <div>
-      <table className="fretboard-table">
-        <tbody>
-          {fretboard.map((stringNotes, index) => (
-            <tr key={index}>
-              {stringNotes.map((note, fretIndex) => (
-                <td key={fretIndex}>{note}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="flex flex-col justify-center items-center h-screen">
+     <h1>Fretboard:</h1>
+
     </div>
   );
 }
