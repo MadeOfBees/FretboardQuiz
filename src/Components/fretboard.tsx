@@ -1,3 +1,5 @@
+import FretDraw from "./fretDraw";
+
 export default function Fretboard(): JSX.Element {
   const twelveNotes: string[] = [
     "A",
@@ -25,7 +27,7 @@ export default function Fretboard(): JSX.Element {
     const fretboard: string[][] = [];
     for (let i = 0; i < fretboardPerams.strings.length; i++) {
       const string: string[] = [];
-      for (let j = 0; j < fretboardPerams.frets; j++) {
+      for (let j = 0; j < fretboardPerams.frets +1; j++) {
         string.push(
           twelveNotes[
             (twelveNotes.indexOf(fretboardPerams.strings[i]) + j) % 12
@@ -42,9 +44,16 @@ export default function Fretboard(): JSX.Element {
   console.log(defaultFretboard);
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
-     <h1>Fretboard:</h1>
-
+      <div>
+      {defaultFretboard.map((string, stringIndex) => (
+        <div key={stringIndex} className="flex space-x">
+          {string.map((note, fretIndex) => (
+            <div key={fretIndex}>
+              <FretDraw note={note} fret={fretIndex} />
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
