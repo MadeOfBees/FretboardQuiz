@@ -1,7 +1,14 @@
-import zeroFret from"../fretBGs/zFret.png";
-import twelveFret from "../fretBGs/midFret.png";
-import defaultFret from "../fretBGs/defFret.png";
-import noLeftFret from "../fretBGs/defFret.png";
+import boDot from"../fretBGs/boDot.png";
+import boDotLast from"../fretBGs/boDotLast.png";
+import botDot from"../fretBGs/botDot.png";
+import botDotLast from"../fretBGs/botDotLast.png";
+import defFret from"../fretBGs/defFret.png";
+import defFretLast from"../fretBGs/defFretLast.png";
+import midFret from"../fretBGs/midFret.png";
+import midFretLast from"../fretBGs/midFretLast.png";
+import noLeftFret from"../fretBGs/noLeftFret.png";
+import topDot from"../fretBGs/topDot.png";
+import zFret from"../fretBGs/zFret.png";
 
 interface Props {
   note: string;
@@ -10,16 +17,13 @@ interface Props {
 
 export default function FretDraw(props: Props): JSX.Element {
   const { note, fret } = props;
-
   let bgPlate: string;
   if (fret == 0) {
-    bgPlate = zeroFret;
+    bgPlate = zFret;
   } else if (fret == 1) {
     bgPlate = noLeftFret;
-  } else if (fret % 12 == 0) {
-    bgPlate = twelveFret;
   } else {
-    bgPlate = defaultFret
+    bgPlate = defFret
   }
 
   return (
@@ -29,6 +33,7 @@ export default function FretDraw(props: Props): JSX.Element {
         backgroundImage: `url(${bgPlate})`,
       }}
     >
+      <div className={note} />
     </div>
   );
 }

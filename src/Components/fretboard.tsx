@@ -15,6 +15,9 @@ export default function Fretboard(): JSX.Element {
     "G",
     "G#",
   ];
+  const singleDotFret: number[] = [3, 5, 7, 9, 15, 17, 19, 21];
+  const doubleDotFret: number[] = [12, 24];
+
   const fretboardDefaults: { frets: number; strings: string[] } = {
     frets: 24,
     strings: ["E", "A", "D", "G", "B", "E"],
@@ -27,7 +30,7 @@ export default function Fretboard(): JSX.Element {
     const fretboard: string[][] = [];
     for (let i = 0; i < fretboardPerams.strings.length; i++) {
       const string: string[] = [];
-      for (let j = 0; j < fretboardPerams.frets +1; j++) {
+      for (let j = 0; j < fretboardPerams.frets + 1; j++) {
         string.push(
           twelveNotes[
             (twelveNotes.indexOf(fretboardPerams.strings[i]) + j) % 12
@@ -41,19 +44,9 @@ export default function Fretboard(): JSX.Element {
 
   const defaultFretboard: string[][] = generateFretboard(fretboardDefaults);
 
-  console.log(defaultFretboard);
-
   return (
-      <div>
-      {defaultFretboard.map((string, stringIndex) => (
-        <div key={stringIndex} className="flex space-x">
-          {string.map((note, fretIndex) => (
-            <div key={fretIndex}>
-              <FretDraw note={note} fret={fretIndex} />
-            </div>
-          ))}
-        </div>
-      ))}
+    <div>
+      <h1>Fretboard</h1>
     </div>
   );
 }
