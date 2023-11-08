@@ -1,39 +1,50 @@
-import boDot from"../fretBGs/boDot.png";
-import boDotLast from"../fretBGs/boDotLast.png";
-import botDot from"../fretBGs/botDot.png";
-import botDotLast from"../fretBGs/botDotLast.png";
-import defFret from"../fretBGs/defFret.png";
-import defFretLast from"../fretBGs/defFretLast.png";
-import midFret from"../fretBGs/midFret.png";
-import midFretLast from"../fretBGs/midFretLast.png";
-import noLeftFret from"../fretBGs/noLeftFret.png";
-import topDot from"../fretBGs/topDot.png";
-import zFret from"../fretBGs/zFret.png";
-
-interface Props {
-  note: string;
-  fret: number;
+interface FretDrawProps {
+  draw: {
+    strings: string[];
+    topString: number;
+    botString: number;
+    finalFret: number;
+    chosenFret: number[];
+  };
 }
 
-export default function FretDraw(props: Props): JSX.Element {
-  const { note, fret } = props;
-  let bgPlate: string;
-  if (fret == 0) {
-    bgPlate = zFret;
-  } else if (fret == 1) {
-    bgPlate = noLeftFret;
-  } else {
-    bgPlate = defFret
-  }
+export default function FretDraw(props: FretDrawProps): JSX.Element {
+  const twelveNotes: string[] = [
+    "A",
+    "A#",
+    "B",
+    "C",
+    "C#",
+    "D",
+    "D#",
+    "E",
+    "F",
+    "F#",
+    "G",
+    "G#",
+  ];
+
+  // TEMP
+  console.log(twelveNotes)
+  // TEMP
 
   return (
-    <div
-      className="flex justify-center items-center h-12 w-12 bg-center bg-no-repeat bg-cover"
-      style={{
-        backgroundImage: `url(${bgPlate})`,
-      }}
-    >
-      <div className={note} />
+    <div>
+      <h1 className="text-2xl text-center">
+        Strings: {props.draw.strings}
+      </h1>
+      <h1 className="text-2xl text-center">
+        Top String: {props.draw.topString}
+      </h1>
+      <h1 className="text-2xl text-center">
+        Bottom String: {props.draw.botString}
+      </h1>
+      <h1 className="text-2xl text-center">
+        Final Fret: {props.draw.finalFret}
+      </h1>
+      <h1 className="text-2xl text-center">
+        Chosen Fret: {props.draw.strings[props.draw.chosenFret[0]-1]}-{props.draw.chosenFret[1]}
+      </h1>
     </div>
   );
 }
