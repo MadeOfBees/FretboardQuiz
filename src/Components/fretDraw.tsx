@@ -1,8 +1,6 @@
 interface FretDrawProps {
   draw: {
     strings: string[];
-    topString: number;
-    botString: number;
     finalFret: number;
     chosenFret: number[];
   };
@@ -32,12 +30,6 @@ export default function FretDraw(props: FretDrawProps): JSX.Element {
     <div>
       <h1 className="text-2xl text-center">
         Strings: {props.draw.strings}
-      </h1>
-      <h1 className="text-2xl text-center">
-        Top String: {props.draw.topString}
-      </h1>
-      <h1 className="text-2xl text-center">
-        Bottom String: {props.draw.botString}
       </h1>
       <h1 className="text-2xl text-center">
         Final Fret: {props.draw.finalFret}
