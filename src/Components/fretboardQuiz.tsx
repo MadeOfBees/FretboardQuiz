@@ -136,7 +136,7 @@ export default function Fretboard(props: FretboardProps): JSX.Element {
           placeholder="Enter your answer here"
           onChange={handleAnswer}
         />
-        <button type="submit">Submit</button>
+        <button type="submit">⠀Submit</button>
       </form>
       {showCorrectAnswer ? (
         <h1 className="text-2xl text-center">
