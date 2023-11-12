@@ -1,13 +1,16 @@
 import Chordagram from "./chordagram";
 import { useState, useEffect } from "react";
 
-interface rams {
+// Define the interface for the component's props
+interface FretboardProps {
   firstFret: number[];
   finalFret: number[];
   tuning: string[];
 }
 
-export default function fretboard(rams: rams): JSX.Element {
+// Fretboard component
+export default function Fretboard(props: FretboardProps): JSX.Element {
+  // State variables
   const [userAnswer, setUserAnswer] = useState<string>("");
   const [showCorrectAnswer, setShowCorrectAnswer] = useState<boolean>(false);
   const [output, setOutput] = useState<{
@@ -40,14 +43,16 @@ export default function fretboard(rams: rams): JSX.Element {
   // Function to pick a random fret on the user's instrument
   function pickRandomFret(): number[] {
     const fretMatrix: number[][] = [];
+
     // Create a matrix of all available frets
-    for (let i = 0; i < rams.tuning.length; i++) {
+    for (let i = 0; i < props.tuning.length; i++) {
       const stringFrets: number[] = [];
-      for (let j = rams.firstFret[i]; j <= rams.finalFret[i]; j++) {
+      for (let j = props.firstFret[i]; j <= props.finalFret[i]; j++) {
         stringFrets.push(j);
       }
       fretMatrix.push(stringFrets);
     }
+
     // Pick a random string that has available frets
     let randomStringIndex: number;
     do {
@@ -73,15 +78,17 @@ export default function fretboard(rams: rams): JSX.Element {
     return chosenFret;
   }
 
-  function makeOutput(): void {
+  // Function to update the output state with random fret information
+  function updateOutput(): void {
     setOutput({
-      strings: rams.tuning,
-      firstFret: rams.firstFret,
-      finalFret: rams.finalFret,
+      strings: props.tuning,
+      firstFret: props.firstFret,
+      finalFret: props.finalFret,
       chosenFret: pickRandomFret(),
     });
   }
 
+  // Function to decode the chosen fret into a musical note
   function decodeChosenFret(): string {
     let keyOfString: number = twelveNotes.indexOf(
       output.strings[output.chosenFret[0] - 1]
@@ -91,7 +98,7 @@ export default function fretboard(rams: rams): JSX.Element {
     return note;
   }
 
-  // function checkAnswer() checks the user's answer against the correct answer, if the user is correct, it returns/consoles true, if the user is incorrect, it returns/consoles false
+  // Function to check the user's answer against the correct answer
   function checkAnswer(userAnswer: string): boolean {
     let correctAnswer: string = decodeChosenFret();
     if (userAnswer === correctAnswer) {
@@ -103,23 +110,24 @@ export default function fretboard(rams: rams): JSX.Element {
     }
   }
 
-  // function handleAnswer() handles the user's answer by setting the user's answer to the value of the input field
+  // Event handler for input change
   function handleAnswer(event: React.ChangeEvent<HTMLInputElement>): void {
     setUserAnswer(event.target.value);
   }
 
-  // function handleSubmit() handles the user's submission of their answer by calling the checkAnswer() function
+  // Event handler for form submission
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     checkAnswer(userAnswer);
     setShowCorrectAnswer(true);
   }
 
-  // useEffect() is a React hook that runs when the component is mounted
+  // Initialize the component's state on mount
   useEffect(() => {
-    makeOutput();
+    updateOutput();
   }, []);
 
+  // Return the component
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-slate-600">
       <Chordagram draw={output} />
@@ -133,10 +141,12 @@ export default function fretboard(rams: rams): JSX.Element {
       </form>
       {showCorrectAnswer ? (
         <h1 className="text-2xl text-center">
-          The correct answer was {decodeChosenFret()} you were {checkAnswer(userAnswer) ? "correct" : "incorrect"}
+          The correct answer was {decodeChosenFret()} you were{" "}
+          {checkAnswer(userAnswer) ? "correct" : "incorrect"}
         </h1>
-      ) : <div />}
-
+      ) : (
+        <div />
+      )}
     </div>
   );
 }
