@@ -102,10 +102,8 @@ export default function Fretboard(props: FretboardProps): JSX.Element {
   function checkAnswer(userAnswer: string): boolean {
     let correctAnswer: string = decodeChosenFret();
     if (userAnswer === correctAnswer) {
-      console.log("Correct!");
       return true;
     } else {
-      console.log("Incorrect!");
       return false;
     }
   }
@@ -127,7 +125,6 @@ export default function Fretboard(props: FretboardProps): JSX.Element {
     updateOutput();
   }, []);
 
-  // Return the component
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-slate-600">
       <Chordagram draw={output} />

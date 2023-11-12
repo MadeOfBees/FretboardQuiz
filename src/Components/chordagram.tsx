@@ -8,44 +8,126 @@ interface ChordagramProps {
 }
 
 export default function Chordagram(props: ChordagramProps): JSX.Element {
-  
-      function findRange() {
-        // first set up our variables
-        let range: number[] = [];
-        let chosenString = props.draw.chosenFret[0]-1;
-        let firstFret = props.draw.firstFret[chosenString];
-        let finalFret = props.draw.finalFret[chosenString];
-        let chosenFret = props.draw.chosenFret[1];
-        // if the chosen fret is 2 frets or less away from the first fret
-        if (chosenFret - firstFret <= 2) {
-          range.push(firstFret);
-          range.push(firstFret + 5);
-        }
-        // iF the chosen fret is 3 frets or less away from the final fret
-        else if (finalFret - chosenFret <= 3) {
-          range.push(finalFret - 5);
-          range.push(finalFret);
-        }
-        else {
-          range.push(chosenFret - 2);
-          range.push(chosenFret + 3);
-        }
-        // now we return the range
-        return range;
-      }
+  const dottedFret: number[] = [3, 5, 7, 9, 12, 15, 17, 19, 21, 24];
+  function findRange() {
+    let range: number[] = [];
+    let chosenString = props.draw.chosenFret[0] - 1;
+    let firstFret = props.draw.firstFret[chosenString];
+    let finalFret = props.draw.finalFret[chosenString];
+    let chosenFret = props.draw.chosenFret[1];
 
+    if (chosenFret - firstFret <= 2) {
+      range.push(firstFret);
+      range.push(firstFret + 5);
+    } else if (finalFret - chosenFret <= 3) {
+      range.push(finalFret - 5);
+      range.push(finalFret);
+    } else {
+      range.push(chosenFret - 2);
+      range.push(chosenFret + 3);
+    }
+
+    return range;
+  }
+
+  function getFretColor(stringIndex: number, fret: number): string {
+    const { chosenFret } = props.draw;
+    const chosenString = chosenFret[0] - 1;
+
+    if (stringIndex === chosenString && fret === chosenFret[1]) {
+      return "blue";
+    } else if (fret >= findRange()[0] && fret <= findRange()[1]) {
+      return "white";
+    } else {
+      return "grey";
+    }
+  }
+
+  function createFretGrid() {
+    const strings = props.draw.strings;
+    const range = findRange();
+    const frets: JSX.Element[][] = [];
+
+    for (let fret = range[0]; fret <= range[1]; fret++) {
+      const fretRow: JSX.Element[] = [];
+      for (let stringIndex = 0; stringIndex < strings.length; stringIndex++) {
+        const color = getFretColor(stringIndex, fret);
+        fretRow.push(
+          <div
+            key={`${stringIndex}-${fret}`}
+            style={{
+              width: "20px",
+              height: "20px",
+              backgroundColor: color,
+              border: "1px solid black",
+            }}
+          ></div>
+        );
+      }
+      frets.push(fretRow);
+    }
+
+    return frets;
+  }
+
+  // ...
+
+  function drawChordagram() {
+    const strings = props.draw.strings;
+    const fretGrid = createFretGrid();
+
+    // Add labels to the grid (string labels on the left, fret numbers on the right)
+    const chordagram = (
+      <div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            {strings.map((string, index) => (
+              <div
+                key={index}
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  textAlign: "center",
+                  border: "1px solid black",
+                }}
+              >
+                {string}
+              </div>
+            ))}
+          </div>
+          {fretGrid.map((row, index) => (
+            <div key={index} style={{ display: "flex", flexDirection: "row" }}>
+              {row}
+              <div
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  textAlign: "center",
+                  border: "1px solid black",
+                  color: dottedFret.includes(findRange()[0] + index)
+                    ? "green"
+                    : "black",
+                }}
+              >
+                {dottedFret.includes(findRange()[0] + index) &&
+                  findRange()[0] + index}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+
+    return (
+      <div className="flex flex-col">
+        {chordagram}
+      </div>
+    );
+  }
 
   return (
     <div>
-      <h1 className="text-2xl text-center">
-        Strings: {props.draw.strings}
-      </h1>
-      <h1 className="text-2xl text-center">
-        Chosen Fret: {props.draw.strings[props.draw.chosenFret[0]-1]}-{props.draw.chosenFret[1]}
-      </h1>
-      <h1 className="text-2xl text-center">
-        Range: {findRange()}
-      </h1>
+      {drawChordagram()}
     </div>
   );
 }
