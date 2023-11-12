@@ -15,25 +15,23 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
     return `${num * 2}vh`;
   }
 
-  // Function to find the range of frets to display
   function findRange() {
-    let range: number[] = [];
-    let chosenString = props.draw.chosenFret[0] - 1;
-    let firstFret = props.draw.firstFret[chosenString];
-    let finalFret = props.draw.finalFret[chosenString];
-    let chosenFret = props.draw.chosenFret[1];
-    if (chosenFret - firstFret <= 2) {
-      range.push(firstFret + 1);
-      range.push(firstFret + 6);
-    } else if (finalFret - chosenFret <= 2) {
-      range.push(finalFret - 4);
-      range.push(finalFret + 1);
+    const { chosenFret, firstFret, finalFret } = props.draw;
+    const chosenString = chosenFret[0] - 1;
+    const fretDifference = finalFret[chosenString] - firstFret[chosenString];
+    let range = [];
+    if (fretDifference <= 4) {
+      range = [finalFret[chosenString] - 4, finalFret[chosenString] + 1];
+    } else if (chosenFret[1] - firstFret[chosenString] <= 2) {
+      range = [firstFret[chosenString] + 1, firstFret[chosenString] + 6];
+    } else if (finalFret[chosenString] - chosenFret[1] <= 2) {
+      range = [finalFret[chosenString] - 4, finalFret[chosenString] + 1];
     } else {
-      range.push(chosenFret - 2);
-      range.push(chosenFret + 3);
+      range = [chosenFret[1] - 2, chosenFret[1] + 3];
     }
     return range;
   }
+  
 
   // Function to determine the background color of a fret
   function getFretBG(stringIndex: number, fret: number): string {
@@ -41,7 +39,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
       fret < props.draw.firstFret[stringIndex] ||
       fret > props.draw.finalFret[stringIndex]
     ) {
-      return "grey";
+      return "#545454";
     } else {
       return "#473534";
     }
