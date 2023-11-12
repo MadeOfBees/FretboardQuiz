@@ -48,14 +48,13 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
     const range = findRange();
     const frets: JSX.Element[][] = [];
   
-    // Ensure we only display up to 5 frets
-    const endFret = Math.min(range[1], range[0] + 4);
-  
-    for (let fret = range[0]; fret <= endFret; fret++) {
+    for (let fret = range[0]; fret <= range[1] - 1; fret++) {
       const fretRow: JSX.Element[] = [];
-      
+  
       for (let stringIndex = 0; stringIndex < strings.length; stringIndex++) {
         const color = getFretColor(stringIndex, fret);
+        const isGrey = color === "grey";
+  
         fretRow.push(
           <div
             key={`${stringIndex}-${fret}`}
@@ -63,17 +62,34 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
               width: "40px",
               height: "60px",
               backgroundColor: color,
-              border: "2px solid black",
+              borderTop: "3px solid black",
+              borderBottom: "3px solid black",
+              borderLeft: isGrey ? "2px solid grey" : "",
+              borderRight: isGrey ? "2px solid grey" : "",
+              position: "relative",
             }}
-          ></div>
+          >
+            {!isGrey && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: "50%",
+                  borderLeft: "2px solid black",
+                }}
+              ></div>
+            )}
+          </div>
         );
       }
-      
+  
       frets.push(fretRow);
     }
-  
     return frets;
-  }  
+  }
+  
+  
 
   function drawChordagram() {
     const strings = props.draw.strings;
@@ -81,7 +97,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
     console.log(props.draw.chosenFret);
     const chordagram = (
       <div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", flexDirection: "column"}}>
           <div style={{ display: "flex", flexDirection: "row" }}>
             {strings.map((string, index) => (
               <div
@@ -98,7 +114,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
             ))}
           </div>
           {fretGrid.map((row, index) => (
-            <div key={index} style={{ display: "flex", flexDirection: "row" }}>
+            <div key={index} style={{ display: "flex", flexDirection: "row", borderLeft: "3px solid black" }}>
               {row}
               <div
                 style={{
@@ -107,7 +123,8 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
                   alignItems: "center",
                   width: "40px",
                   height: "60px",
-                  fontWeight: "bold"
+                  fontWeight: "bold",
+                  borderLeft: "3px solid black",
                 }}
               >
                 {dottedFret.includes(findRange()[0] + index) &&
