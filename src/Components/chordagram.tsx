@@ -15,7 +15,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
         let firstFret = props.draw.firstFret[chosenString];
         let finalFret = props.draw.finalFret[chosenString];
         let chosenFret = props.draw.chosenFret[1];
-        // if it the chosen fret is 2 frets or less away from the first fret
+        // if the chosen fret is 2 frets or less away from the first fret
         if (chosenFret - firstFret <= 2) {
           range.push(firstFret);
           range.push(firstFret + 5);
