@@ -26,7 +26,6 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
       range.push(chosenFret - 2);
       range.push(chosenFret + 3);
     }
-
     return range;
   }
 
@@ -69,7 +68,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
               position: "relative",
             }}
           >
-            {!isGrey && (
+            { (
               <div
                 style={{
                   position: "absolute",
@@ -106,6 +105,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
                   width: "40px",
                   height: "40px",
                   textAlign: "center",
+                  marginLeft: "1px",
                   fontWeight: "bold"
                 }}
               >
