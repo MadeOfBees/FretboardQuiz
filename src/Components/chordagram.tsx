@@ -8,6 +8,7 @@ interface ChordagramProps {
 }
 
 export default function Chordagram(props: ChordagramProps): JSX.Element {
+  
       function findRange() {
         // first set up our variables
         let range: number[] = [];
