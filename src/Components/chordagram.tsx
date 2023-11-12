@@ -28,7 +28,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
     return range;
   }
 
-  function getFretType(stringIndex: number, fret: number): string {
+  function getFretBG(stringIndex: number, fret: number): string {
     if (
       fret < props.draw.firstFret[stringIndex] ||
       fret > props.draw.finalFret[stringIndex]
@@ -46,7 +46,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
     for (let fret = range[0]; fret <= range[1] - 1; fret++) {
       const fretRow: JSX.Element[] = [];
       for (let stringIndex = 0; stringIndex < strings.length; stringIndex++) {
-        const color = getFretType(stringIndex, fret);
+        const color = getFretBG(stringIndex, fret);
         fretRow.push(
           <div
             key={`${stringIndex}-${fret}`}
@@ -54,8 +54,8 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
               width: "40px",
               height: "60px",
               backgroundColor: color,
-              borderTop: "3px solid black",
-              borderBottom: "3px solid black",
+              borderTop: "4px solid black",
+              borderBottom: "4px solid black",
               position: "relative",
             }}
           >
