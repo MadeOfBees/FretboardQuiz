@@ -19,9 +19,9 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
     if (chosenFret - firstFret <= 2) {
       range.push(firstFret+1);
       range.push(firstFret + 6);
-    } else if (finalFret - chosenFret <= 3) {
-      range.push(finalFret - 5);
-      range.push(finalFret);
+    }else if (finalFret - chosenFret <= 2) {
+      range.push(finalFret - 4);
+      range.push(finalFret + 1);
     } else {
       range.push(chosenFret - 2);
       range.push(chosenFret + 3);
@@ -60,8 +60,8 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
           <div
             key={`${stringIndex}-${fret}`}
             style={{
-              width: "20px",
-              height: "30px",
+              width: "40px",
+              height: "60px",
               backgroundColor: color,
               border: "2px solid black",
             }}
@@ -78,7 +78,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
   function drawChordagram() {
     const strings = props.draw.strings;
     const fretGrid = createFretGrid();
-
+    console.log(props.draw.chosenFret);
     const chordagram = (
       <div>
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -87,9 +87,10 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
               <div
                 key={index}
                 style={{
-                  width: "20px",
-                  height: "20px",
-                  textAlign: "center"
+                  width: "40px",
+                  height: "40px",
+                  textAlign: "center",
+                  fontWeight: "bold"
                 }}
               >
                 {string}
@@ -101,9 +102,12 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
               {row}
               <div
                 style={{
-                  width: "20px",
-                  height: "30px",
-                  textAlign: "center"
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "40px",
+                  height: "60px",
+                  fontWeight: "bold"
                 }}
               >
                 {dottedFret.includes(findRange()[0] + index) &&
