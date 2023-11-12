@@ -128,6 +128,8 @@ export default function Fretboard(props: FretboardProps): JSX.Element {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-slate-600">
       <Chordagram draw={output} />
+      {/* spacing div */}
+      <div className="h-10" />
       <form onSubmit={handleSubmit}>
         <input
           type="text"

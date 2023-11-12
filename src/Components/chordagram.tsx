@@ -36,10 +36,10 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
 
     if (stringIndex === chosenString && fret === chosenFret[1]) {
       return "blue";
-    } else if (fret >= findRange()[0] && fret <= findRange()[1]) {
-      return "white";
-    } else {
+    } else if (fret < props.draw.firstFret[stringIndex] || fret > props.draw.finalFret[stringIndex]) {
       return "grey";
+    } else {
+      return "white"
     }
   }
 
@@ -57,9 +57,9 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
             key={`${stringIndex}-${fret}`}
             style={{
               width: "20px",
-              height: "20px",
+              height: "30px",
               backgroundColor: color,
-              border: "1px solid black",
+              border: "2px solid black",
             }}
           ></div>
         );
@@ -70,13 +70,10 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
     return frets;
   }
 
-  // ...
-
   function drawChordagram() {
     const strings = props.draw.strings;
     const fretGrid = createFretGrid();
 
-    // Add labels to the grid (string labels on the left, fret numbers on the right)
     const chordagram = (
       <div>
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -87,8 +84,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
                 style={{
                   width: "20px",
                   height: "20px",
-                  textAlign: "center",
-                  border: "1px solid black",
+                  textAlign: "center"
                 }}
               >
                 {string}
@@ -101,12 +97,8 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
               <div
                 style={{
                   width: "20px",
-                  height: "20px",
-                  textAlign: "center",
-                  border: "1px solid black",
-                  color: dottedFret.includes(findRange()[0] + index)
-                    ? "green"
-                    : "black",
+                  height: "30px",
+                  textAlign: "center"
                 }}
               >
                 {dottedFret.includes(findRange()[0] + index) &&
