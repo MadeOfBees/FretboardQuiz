@@ -51,11 +51,11 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
           <div
             key={`${stringIndex}-${fret}`}
             style={{
-              width: "40px",
-              height: "60px",
+              width: "4.0vh",
+              height: "6.0vh",
               backgroundColor: color,
-              borderTop: "4px solid black",
-              borderBottom: "4px solid black",
+              borderTop: ".4vh solid black",
+              borderBottom: ".4vh solid black",
               position: "relative",
             }}
           >
@@ -66,7 +66,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
                   top: 0,
                   bottom: 0,
                   left: "50%",
-                  borderLeft: "2px solid black",
+                  borderLeft: ".2vh solid black",
                 }}
               ></div>
             }
@@ -75,8 +75,8 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
               props.draw.chosenFret[1] === fret && (
                 <div
                   style={{
-                    width: "30px",
-                    height: "30px",
+                    width: "3.0vh",
+                    height: "3.0vh",
                     borderRadius: "50%",
                     backgroundColor: "#e38120",
                     position: "absolute",
@@ -101,16 +101,16 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
     const chordagram = (
         <div style={{ display: "flex", flexDirection: "column" }}>
           {/* Displaying the string labels */}
-          <div style={{ display: "flex", flexDirection: "row", marginLeft: "4px" }}>
+          <div style={{ display: "flex", flexDirection: "row", marginLeft: ".4vh", marginBottom: ".4vh"}}>
             {strings.map((string, index) => (
               <div
                 key={index}
                 style={{
-                  width: "40px",
-                  height: "40px",
+                  width: "4.0vh",
+                  height: "4.0vh",
                   textAlign: "center",
                   fontWeight: "bold",
-                  fontSize: "1.5rem",
+                  fontSize: "3vh",
                 }}
               >
                 {string}
@@ -124,7 +124,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                borderLeft: "4px solid black",
+                borderLeft: ".4vh solid black",
               }}
             >
               {row}
@@ -134,11 +134,11 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  width: "40px",
-                  height: "60px",
+                  width: "4.0vh",
+                  height: "6.0vh",
                   fontWeight: "bold",
-                  fontSize: "1.5rem",
-                  borderLeft: "4px solid black",
+                  fontSize: "3vh",
+                  borderLeft: ".4vh solid black",
                 }}
               >
                 {/* Displaying the fret number only if it's in the dottedFret array */}
