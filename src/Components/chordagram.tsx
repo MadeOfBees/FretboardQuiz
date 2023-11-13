@@ -21,13 +21,13 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
     const fretDifference = finalFret[chosenString] - firstFret[chosenString];
     let range = [];
     if (fretDifference <= 4) {
-      range = [finalFret[chosenString] - 4, finalFret[chosenString] + 1];
+      range = [finalFret[chosenString] - 4, finalFret[chosenString]];
     } else if (chosenFret[1] - firstFret[chosenString] <= 2) {
-      range = [firstFret[chosenString] + 1, firstFret[chosenString] + 6];
+      range = [firstFret[chosenString] + 1, firstFret[chosenString] + 5];
     } else if (finalFret[chosenString] - chosenFret[1] <= 2) {
-      range = [finalFret[chosenString] - 4, finalFret[chosenString] + 1];
+      range = [finalFret[chosenString] - 4, finalFret[chosenString]];
     } else {
-      range = [chosenFret[1] - 2, chosenFret[1] + 3];
+      range = [chosenFret[1] - 2, chosenFret[1] + 2];
     }
     return range;
   }
@@ -50,7 +50,7 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
     const strings = props.draw.strings;
     const range = findRange();
     const frets: JSX.Element[][] = [];
-    for (let fret = range[0]; fret <= range[1] - 1; fret++) {
+    for (let fret = range[0]; fret <= range[1]; fret++) {
       const fretRow: JSX.Element[] = [];
       for (let stringIndex = 0; stringIndex < strings.length; stringIndex++) {
         const color = getFretBG(stringIndex, fret);
