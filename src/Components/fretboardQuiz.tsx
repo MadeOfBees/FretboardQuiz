@@ -6,6 +6,8 @@ interface FretboardProps {
   firstFret: number[];
   finalFret: number[];
   tuning: string[];
+  orientation: string;
+  labelChosenFret: boolean;
 }
 
 // Fretboard component
@@ -18,11 +20,15 @@ export default function Fretboard(props: FretboardProps): JSX.Element {
     firstFret: number[];
     finalFret: number[];
     chosenFret: number[];
+    orientation: string;
+    labelChosenFret: boolean;
   }>({
     strings: [],
     firstFret: [],
     finalFret: [],
     chosenFret: [],
+    orientation: "",
+    labelChosenFret: false,
   });
 
   const twelveNotes: string[] = [
@@ -80,12 +86,25 @@ export default function Fretboard(props: FretboardProps): JSX.Element {
 
   // Function to update the output state with random fret information
   function updateOutput(): void {
-    setOutput({
-      strings: props.tuning,
-      firstFret: props.firstFret,
-      finalFret: props.finalFret,
-      chosenFret: pickRandomFret(),
-    });
+    if (props.orientation !== "horizontal-reverse") {
+      setOutput({
+        strings: props.tuning,
+        firstFret: props.firstFret,
+        finalFret: props.finalFret,
+        chosenFret: pickRandomFret(),
+        orientation: props.orientation,
+        labelChosenFret: props.labelChosenFret,
+      });
+    } else {
+      setOutput({
+        strings: [...props.tuning].reverse(),
+        firstFret: [...props.firstFret].reverse(),
+        finalFret: [...props.finalFret].reverse(),
+        chosenFret: pickRandomFret(),
+        orientation: props.orientation,
+        labelChosenFret: props.labelChosenFret,
+      });
+    }
   }
 
   // Function to decode the chosen fret into a musical note
