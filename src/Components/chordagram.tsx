@@ -117,6 +117,8 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
         frets.push(fretRow);
       }
       return frets;
+
+      // horozontal layout
     } else {
       for (let stringIndex = 0; stringIndex < strings.length; stringIndex++) {
         const fretRow: JSX.Element[] = [];
@@ -290,18 +292,25 @@ export default function Chordagram(props: ChordagramProps): JSX.Element {
                 marginBottom: unitConvert(0.4),
               }}
             ></div>
-            {fretGrid.map((row, index) => (
-              <div
-                key={index}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  borderLeft: `${unitConvert(0.4)} solid black`,
-                }}
-              >
-                {row}
-              </div>
-            ))}
+            <div
+              style={{
+                marginLeft: unitConvert(0.4),
+                borderTop: `${unitConvert(0.4)} solid black`,
+                borderBottom: `${unitConvert(0.4)} solid black`,
+              }}
+            >
+              {fretGrid.map((row, index) => (
+                <div
+                  key={index}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  {row}
+                </div>
+              ))}
+            </div>
           </div>
           {/* Displaying the string labels */}
           <div

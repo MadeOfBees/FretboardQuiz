@@ -5,7 +5,7 @@ export default function App() {
   const finalFret: number[] = [24, 24, 24, 24, 24, 24]; // Default last frets for the instrument
   const tuning: string[] = ["E", "A", "D", "G", "B", "E"]; // Default tuning for the instrument
   // the 3 orientations are "vertical", "horizontal", and "horizontal-reverse"
-  const orientation: string = "horizontal-reverse"; // Default orientation for the instrument
+  const orientation: string = "horizontal"; // Default orientation for the instrument
   const labelChosenFret: boolean = true; // Default value for whether or not to label the chosen fret
 
   // GARBAGE DATA
