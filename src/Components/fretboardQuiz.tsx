@@ -1,5 +1,7 @@
+import { useState, useEffect  } from "react";
+import { Dialog, Transition } from "@headlessui/react";
 import Chordagram from "./chordagram";
-import { useState, useEffect } from "react";
+import NoteSelect from "./noteSelect";
 
 // Define the interface for the component's props
 interface FretboardProps {
@@ -14,7 +16,8 @@ interface FretboardProps {
 export default function Fretboard(props: FretboardProps): JSX.Element {
   // State variables
   const [userAnswer, setUserAnswer] = useState<string>("");
-  const [showCorrectAnswer, setShowCorrectAnswer] = useState<boolean>(false);
+  const [answerIsCorrect, setAnswerIsCorrect] = useState<boolean>(false);
+
   const [output, setOutput] = useState<{
     strings: string[];
     firstFret: number[];
@@ -30,6 +33,7 @@ export default function Fretboard(props: FretboardProps): JSX.Element {
     orientation: "",
     labelChosenFret: false,
   });
+  let [isOpen, setIsOpen] = useState(false);
 
   const twelveNotes: string[] = [
     "A",
@@ -45,6 +49,42 @@ export default function Fretboard(props: FretboardProps): JSX.Element {
     "G",
     "G#",
   ];
+
+  const handleNoteClick = (note: string) => {
+    setUserAnswer(note);
+    setIsOpen(false);
+  };
+
+  function QuizModal(): JSX.Element {
+    return (
+      <Transition
+        // Show or hide the component based on the isOpen prop
+        show={isOpen}
+        // Configuration for entering the transition
+        enter="transition duration-100 ease-out" // Set the entering transition duration and easing
+        enterFrom="transform scale-95 opacity-0" // Initial state when entering (scaled down and transparent)
+        enterTo="transform scale-100 opacity-100" // Final state when entering (full scale and opaque)
+        // Configuration for leaving the transition
+        leave="transition duration-75 ease-out" // Set the leaving transition duration and easing
+        leaveFrom="transform scale-100 opacity-100" // Initial state when leaving (full scale and opaque)
+        leaveTo="transform scale-95 opacity-0" // Final state when leaving (scaled down and transparent)
+      >
+        <Dialog open={isOpen} onClose={() => setIsOpen(false)} tabIndex={0}>
+          <div className="fixed inset-0 flex items-center justify-center p-4">
+            {/* Dark overlay */}
+            <div className="absolute inset-0 bg-black opacity-50"></div>
+            {/* Blurred background */}
+            <div className="relative backdrop-filter backdrop-blur-md bg-white p-8">
+              <Dialog.Panel style={{ height: "50vh", width: "50vh" }}>
+                {/* noteSelect */}
+                <NoteSelect handleNoteClick={handleNoteClick} />
+              </Dialog.Panel>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+    );
+  }
 
   // Function to pick a random fret on the user's instrument
   function pickRandomFret(): number[] {
@@ -107,7 +147,7 @@ export default function Fretboard(props: FretboardProps): JSX.Element {
     }
   }
 
-  // Function to decode the chosen fret into a musical note
+  //  Function to decode the chosen fret into a musical note
   function decodeChosenFret(): string {
     let keyOfString: number = twelveNotes.indexOf(
       output.strings[output.chosenFret[0] - 1]
@@ -127,44 +167,38 @@ export default function Fretboard(props: FretboardProps): JSX.Element {
     }
   }
 
-  // Event handler for input change
-  function handleAnswer(event: React.ChangeEvent<HTMLInputElement>): void {
-    setUserAnswer(event.target.value);
-  }
-
-  // Event handler for form submission
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
-    checkAnswer(userAnswer);
-    setShowCorrectAnswer(true);
-  }
-
   // Initialize the component's state on mount
   useEffect(() => {
     updateOutput();
   }, []);
 
+  // when userAnswer changes, check if it's correct
+  useEffect(() => {
+    if (checkAnswer(userAnswer)) {
+      setAnswerIsCorrect(true);
+    } else {
+      setAnswerIsCorrect(false);
+    }
+  }, [userAnswer]);
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-slate-600">
+    <div
+      className="flex flex-col items-center bg-slate-600"
+      onClick={() => setIsOpen(true)}
+    >
+      {/* h1 with vh 20 text */}
+      <h1 className="text-6xl text-center text-white pt-10 pb-10">
+        Fretboard Quiz!
+      </h1>
+      {/* Chordagram */}
       <Chordagram draw={output} />
-      {/* spacing div */}
-      <div className="h-10" />
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter your answer here"
-          onChange={handleAnswer}
-        />
-        <button type="submit">⠀Submit</button>
-      </form>
-      {showCorrectAnswer ? (
-        <h1 className="text-2xl text-center">
-          The correct answer was {decodeChosenFret()} you were{" "}
-          {checkAnswer(userAnswer) ? "correct" : "incorrect"}
+      <QuizModal />
+      {/* if there's a userAnswer  display if it was right or not  */}
+      {userAnswer ? (
+        <h1 className="text-6xl text-center text-white pt-10 pb-10">
+          {answerIsCorrect ? "Correct!" : "Incorrect!"}
         </h1>
-      ) : (
-        <div />
-      )}
+      ) : null}
     </div>
   );
 }
