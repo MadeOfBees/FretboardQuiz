@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import verticalCarousel from "./verticalCarousel";
 
 interface NoteSelectProps {
   handleNoteClick: (note: string) => void;
@@ -9,7 +10,8 @@ export default function NoteSelect(props: NoteSelectProps): JSX.Element {
   const sharpFlatArray: string[] = ["⠀", "#", "b"];
   const [currentNote, setCurrentNote] = useState<string>("A");
   const [sharpFlat, setSharpFlat] = useState<string>("⠀");
-  const [pNote, setPNote] = useState<string>("A");
+  const [outputNote, setoutputNote] = useState<string>("A");
+  const [altDisplayNote, setAltDisplayNote] = useState<string>("A");
 
   const convertFlatToSharp = (note: string): string => {
     switch (note) {
@@ -32,60 +34,86 @@ export default function NoteSelect(props: NoteSelectProps): JSX.Element {
     }
   };
 
-  const addNoteTogether = (note: string, sharpFlat: string): string => {
+  const convertSharpToFlat = (note: string): string => {
+    switch (note) {
+      case "A":
+        return "Bb";
+      case "B":
+        return "C";
+      case "C":
+        return "Db";
+      case "D":
+        return "Eb";
+      case "E":
+        return "F";
+      case "F":
+        return "Gb";
+      case "G":
+        return "Ab";
+      default:
+        return "error";
+    }
+  };
+
+  const addNoteTogetherForDisplay = (
+    note: string,
+    sharpFlat: string
+  ): string => {
     switch (sharpFlat) {
       case "b":
-        setPNote(convertFlatToSharp(note));
-        console.log(convertFlatToSharp(note));
+        setAltDisplayNote(convertFlatToSharp(note));
         return convertFlatToSharp(note);
-      case "⠀":
-        setPNote(note);
-        console.log(note);
-        return note;
+      case "#":
+        setAltDisplayNote(convertSharpToFlat(note));
+        return convertSharpToFlat(note);
       default:
-        setPNote(note + "#");
-        console.log(note + "#");
+        setAltDisplayNote(note);
+        return note;
+    }
+  };
+
+  const addNoteTogetherForOutput = (
+    note: string,
+    sharpFlat: string
+  ): string => {
+    switch (sharpFlat) {
+      case "⠀":
+        setoutputNote(note);
+        return note;
+      case "b":
+        setoutputNote(convertFlatToSharp(note));
+        return convertFlatToSharp(note);
+      default:
+        setoutputNote(note + "#");
         return note + "#";
     }
   };
 
-  //   every time currentNote or sharpFlat changes, update pNote
   useEffect(() => {
-    addNoteTogether(currentNote, sharpFlat);
+    addNoteTogetherForDisplay(currentNote, sharpFlat);
+    addNoteTogetherForOutput(currentNote, sharpFlat);
   }, [currentNote, sharpFlat]);
 
-  const verticalCarousel = (arrayType: string[]): JSX.Element => {
-    return (
-      <div className="flex flex-col">
-        {arrayType.map((input: string, index: number) => (
-          <button
-            className="px-4 py-2 border border-gray-500 rounded-md hover:bg-gray-700"
-            key={index}
-            onClick={() => {
-              if (arrayType === sharpFlatArray) {
-                setSharpFlat(input);
-              } else {
-                setCurrentNote(input);
-              }
-            }}
-          >
-            {input}
-          </button>
-        ))}
-      </div>
-    );
-  };
-
   return (
-    // two vertical carousels side by side, first one is notes, second one is sharp/flat
     <div className="flex flex-row">
-      {verticalCarousel(buttonArray)}
-      {verticalCarousel(sharpFlatArray)}
-      {pNote}
-      {/* submit button */}
+      {verticalCarousel({
+        arrayType: buttonArray,
+        setSharpFlat: setSharpFlat,
+        setCurrentNote: setCurrentNote,
+        sharpFlatArray: sharpFlatArray,
+      })}
+      {verticalCarousel({
+        arrayType: sharpFlatArray,
+        setSharpFlat: setSharpFlat,
+        setCurrentNote: setCurrentNote,
+        sharpFlatArray: sharpFlatArray,
+      })}
+      {currentNote}
+      {sharpFlat}
+      {currentNote !== altDisplayNote ? `(${altDisplayNote})` : null}
       <button
         className="px-4 py-2 border border-gray-500 rounded-md hover:bg-gray-700"
-        onClick={() => props.handleNoteClick(pNote)}
+        onClick={() => props.handleNoteClick(outputNote)}
       >
         Submit
       </button>
