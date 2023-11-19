@@ -97,16 +97,18 @@ export default function NoteSelect(props: NoteSelectProps): JSX.Element {
   return (
     <div className="flex flex-row">
       {verticalCarousel({
-        arrayType: buttonArray,
+        givenArray: buttonArray,
         setSharpFlat: setSharpFlat,
+        sharpFlat: sharpFlat,
         setCurrentNote: setCurrentNote,
-        sharpFlatArray: sharpFlatArray,
+        currentNote: currentNote
       })}
       {verticalCarousel({
-        arrayType: sharpFlatArray,
+        givenArray: sharpFlatArray,
         setSharpFlat: setSharpFlat,
+        sharpFlat: sharpFlat,
         setCurrentNote: setCurrentNote,
-        sharpFlatArray: sharpFlatArray,
+        currentNote: currentNote,
       })}
       {currentNote}
       {sharpFlat}
