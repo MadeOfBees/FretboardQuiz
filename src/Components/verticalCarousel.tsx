@@ -103,7 +103,7 @@ export default function verticalCarousel(
   }
 
   return (
-    // TODO:
+    // TODO: this
     <div className="flex flex-col">
       {/* top button is the first val of the currentDisplay array */}
       <div
